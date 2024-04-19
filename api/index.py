@@ -1,6 +1,19 @@
 from flask import Flask, request, render_template, send_file
 import random, json, functions
 from functools import cache
+from PIL import Image, ImageFont
+
+# UTILITY FUNCTION DEFINITIONS
+
+# Create image from text
+def CreateImage(text :str, font_size :int = 36, color :tuple[int, int, int, int] = (255, 255, 255, 255), filename :str = "temp"):
+    font = ImageFont.truetype("assets/ComicMono.ttf", size=font_size)
+    mask_image = font.getmask(text, "L")
+    img = Image.new("RGB", mask_image.size)
+    img.im.paste(color, (0, 0) + mask_image.size, mask_image)
+    img.save(f"temp\\{filename}.png")
+    return f"temp\\{filename}.png"
+
 
 app = Flask(__name__, template_folder="../web/templates", static_folder="../web/static")
 
