@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, send_file
-import random, json, functions
+import random, json
 from functools import cache
 from PIL import Image, ImageFont
 
@@ -91,7 +91,7 @@ def fizzbuzz():
 @app.route("/ip")
 def ip():
     ip = request.headers.get("X-Real-IP", request.remote_addr)
-    image = functions.CreateImage(ip)
+    image = CreateImage(ip)
     return send_file(f"../{image}", mimetype="image/png", download_name="ip.png")
 
 if __name__ == '__main__':
