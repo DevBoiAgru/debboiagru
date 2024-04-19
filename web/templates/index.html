@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Little website by DevBoiAgru, for silly people">
+    <meta name="author" content="DevBoiAgru">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DebBoiAgru">
+    <meta property="og:description" content="Stupid website by a stupid dude. Because why not?">
+    <meta property="og:url" content="{{ url_for('index') }}">
+    <meta property="og:image" content="https://raw.githubusercontent.com/DevBoiAgru/GoofyAPI/master/screenshots/Logo.png">
+    <meta name="theme-color" content="#08EA8E">
+    <title>WebBoiAgru</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/DevBoiAgru/GoofyAPI/master/screenshots/Logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish">
+</head>
+<body>
+    <div class="content">
+        <header>
+            <a href="http://">API</a>
+            <a href=" {{url_for('index')}} ">Home</a>
+            <a href="http://github.com/DevBoiAgru">DevBoiAgru</a>
+            <a href="http://">Source code</a>
+        </header>
+        <h1 class="heading" style="font-size: 5em;">This is a playground site!</h1>
+        <h2 class="heading" style="font-size: 2em;">Lots of fun experiments and things to try out!</h2>
+        <hr width="50%">
+        <div class="projects">
+            <div class="project-category">
+                <h2 class="heading">REST API Endpoints</h3>
+                    <hr width="50%">
+                    <a href=" {{url_for('fizzbuzz')}} ">Generate FizzBuzz upto 'n' terms (query parameter 'n')</a>
+                    <a href=" {{url_for('quote')}}?raw=1 ">Random quote from the baby blue club</a>
+                    <a href=" {{url_for('ip')}} ">Get IP as image</a>
+            </div>
+            <div class="project-category">
+                <h2 class="heading">Webpages</h3>
+                <hr width="50%">
+                <a href=" {{url_for('house')}} ">Endless House</a>
+                <a href=" {{url_for('laser')}} ">Laser pointer</a>
+                <a href=" {{url_for('calculator')}} ">Scientific calculator</a>
+                <a href=" {{url_for('quote')}} ">Random quote from the baby blue club</a>
+                <a href=" {{url_for('dcembed')}} ">Generate discord rich embed</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
