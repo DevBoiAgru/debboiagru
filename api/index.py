@@ -87,12 +87,5 @@ def fizzbuzz():
     for i in range(1, n): fb.append ("FizzBuzz" if i%3==0 and i%5==0 else "Fizz" if i%3==0 else "Buzz" if i%5==0 else i)
     return fb
 
-# Return ip address as an image
-@app.route("/ip")
-def ip():
-    ip = request.headers.get("X-Real-IP", request.remote_addr)
-    image = CreateImage(ip)
-    return send_file(f"../{image}", mimetype="image/png", download_name="ip.png")
-
 if __name__ == '__main__':
     app.run(debug=True)

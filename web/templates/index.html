@@ -20,10 +20,10 @@
 <body>
     <div class="content">
         <header>
-            <a href="http://">API</a>
+            <!-- <a href="http://">API</a> -->
             <a href=" {{url_for('index')}} ">Home</a>
             <a href="http://github.com/DevBoiAgru">DevBoiAgru</a>
-            <a href="http://">Source code</a>
+            <!-- <a href="http://">Source code</a> -->
         </header>
         <h1 class="heading" style="font-size: 5em;">This is a playground site!</h1>
         <h2 class="heading" style="font-size: 2em;">Lots of fun experiments and things to try out!</h2>
@@ -32,9 +32,8 @@
             <div class="project-category">
                 <h2 class="heading">REST API Endpoints</h3>
                     <hr width="50%">
-                    <a href=" {{url_for('fizzbuzz')}} ">Generate FizzBuzz upto 'n' terms (query parameter 'n')</a>
+                    <a href=" {{url_for('fizzbuzz')}}?n=100 ">Generate FizzBuzz upto 'n' terms (query parameter 'n')</a>
                     <a href=" {{url_for('quote')}}?raw=1 ">Random quote from the baby blue club</a>
-                    <a href=" {{url_for('ip')}} ">Get IP as image</a>
             </div>
             <div class="project-category">
                 <h2 class="heading">Webpages</h3>
