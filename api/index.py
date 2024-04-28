@@ -101,10 +101,13 @@ def brainrot():
             url = "https://api.awanllm.com/v1/chat/completions"
             key = os.getenv("AWAN_LLM_KEY")
             req = requests.post(url, json=payload, headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"})
-            status = req.json().get("statusCode", "200")
-            if status == 429:
-                return {"brainrot":"Yo, you've reached maxed out, bruh! I'm lowkey broke, can't cop more comp time, so tryna get back atcha laters, G [Rate limit exceeded]"}
-            reply = req.json()["choices"][0]["message"]["content"]
+            try:
+                status = req.json().get("statusCode", "200")
+                if status == 429:
+                    return {"brainrot":"Yo, you've reached maxed out, bruh! I'm lowkey broke, can't cop more comp time, so tryna get back atcha laters, G [Rate limit exceeded]"}
+                reply = req.json()["choices"][0]["message"]["content"]
+            except:
+                print("ERROR: " + req.text)
             return {"brainrot":reply}
         else:
             return {"error":"Request is not in JSON format"}, 400
