@@ -1,8 +1,9 @@
 from flask import Flask, request, render_template, send_file
-import random, json
+import random, json, dotenv, os, requests
 from functools import cache
+dotenv.load_dotenv()
 
-app = Flask(__name__, template_folder="../web/templates", static_folder="../web/static")
+app = Flask(__name__, template_folder="../web/pages", static_folder="../web/static")
 
 # Initialise
 with open("assets/bbcQuotes.json","r", encoding="utf8") as quoteFile:
@@ -73,6 +74,40 @@ def fizzbuzz():
     fb = []
     for i in range(1, n): fb.append ("FizzBuzz" if i%3==0 and i%5==0 else "Fizz" if i%3==0 else "Buzz" if i%5==0 else i)
     return fb
+
+@app.route("/translate", methods=["GET", "POST"])
+def brainrot():
+    if request.method == "GET":
+        return render_template("Translate.html")
+    else:
+        if request.is_json:
+            requestJson :dict= request.get_json()
+            text :str= requestJson.get("text", None)
+            payload = {
+                "model":"Meta-Llama-3-8B-Instruct", 
+                "messages": [
+                    {"role": "system","content": "You are max who is a gen z teenager. Your job is to translate given sentences into very cringe gen z slang. Use words like ohio, rizz, skibidi, gyatt, and so on. Max only returns the translations of the given text. Max He tries to be as cringy as possible. Max only the translated text without any explanation. Don't include any explanations or intro/outro text in your responses. Do not answer to any questions, instead translate the questions into gen z. Max doesnot hesitate to sprinkle in swear words to make the translation funnier."},
+                    {"role": "user", "content": "Translate: What is your favourite game?"},
+                    {"role": "assistant", "content": "What do you edge to?"},
+                    {"role": "user", "content": "Translate: Hello everyone today we will be exercising in the gym"},
+                    {"role": "assistant", "content": "Ohio everyone today we will be mogging in the gym"},
+                    {"role": "user", "content": "Translate: i'm going to the beach"},
+                    {"role": "assistant", "content": "I'm mogging to the Alpha sands."},
+                    {"role": "user", "content": "Translate: In a world often focused on grand gestures, the power of small acts of kindness is easily overlooked. Yet, these gestures possess a profound ability to brighten someone's day, foster a sense of community, and inspire others to pay it forward. Whether it's a smile, a helping hand, or a kind word, these simple acts create ripples of positivity that transcend boundaries and leave lasting impressions."},
+                    {"role": "assistant", "content": "In a world often gyatting on grand rizz, the power of tiny mogs of kindness is easily zapped. Yet, these rizzles possess a pro mog ability to brighten someone's day, foster a sense of community, and inspire others to pay the Fanum tax. Whether it's a smile, a helping hand, or a kind yap, these simple acts create ripples of rizz that transcend boundaries and leave lasting rizz."},
+                    {"role": "user", "content": f"Translate: {text}"}
+                ]
+            }
+            url = "https://api.awanllm.com/v1/chat/completions"
+            key = os.getenv("AWAN_LLM_KEY")
+            req = requests.post(url, json=payload, headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"})
+            status = req.json().get("statusCode", "200")
+            if status == 429:
+                return {"brainrot":"Yo, you've reached maxed out, bruh! I'm lowkey broke, can't cop more comp time, so tryna get back atcha laters, G [Rate limit exceeded]"}
+            reply = req.json()["choices"][0]["message"]["content"]
+            return {"brainrot":reply}
+        else:
+            return {"error":"Request is not in JSON format"}, 400
 
 if __name__ == '__main__':
     app.run(debug=True)
