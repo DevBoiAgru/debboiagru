@@ -15,14 +15,14 @@
 <body>
     <div class="content">
         <header>
-            <a href="{{ url_for(request.endpoint) }}?raw=1">API</a>
+            <a href="{{ url_for(request.endpoint) }}?raw=1">REST Endpoint</a>
             <a href=" {{url_for('index')}} ">Home</a>
             <a href="{{ url_for(request.endpoint) }}">Refresh</a>
         </header>
     
         <h1 class="quote">{{data["heading"]}}</h1>
         <hr>
-        <h1>- {{data["content"]}}</h3>
+        <h1 class="author">- {{data["content"]}}</h3>
     </div>
 </body>
 <style>
@@ -70,6 +70,26 @@ header > a{
 header > a:hover{
     transform: translateY(-5px);
     text-shadow: 3px 3px 0px rgba(0,0,0,0.23);
+}
+
+/* Small devices (phones) */
+@media only screen and (max-width: 600px) {
+    .quote{
+        font-size: 1.5em;
+    }
+    body{
+        padding: 10px;
+    }
+    header{
+        display: flex;
+        flex-direction: column;
+    }
+    header > *{
+        margin-bottom: 5px;
+    }
+    .author{
+        font-size: 1.2em;
+    }
 }
 </style>
 </html>
