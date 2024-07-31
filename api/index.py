@@ -26,6 +26,10 @@ def laser():
 def calculator():
     return render_template("Calculator.html")
 
+@app.route('/alien')
+def alien():
+    return render_template("Alien.html")
+
 # Quote from the baby blue club
 @app.route('/bbcquote')
 def quote():
