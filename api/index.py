@@ -81,6 +81,13 @@ def slots():
         draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
     
     resp.headers["Cache-Control"] = "no-cache"
+    resp.header["Pragma-directive"]= "no-cache"
+    resp.header["Cache-directive"] = "no-cache"
+    resp.header["Cache-control"] = "no-cache"
+    resp.header["Pragma"] = "no-cache"
+    resp.header["Expires"] = "0"
+
+
     # imgBytes = io.BytesIO()
     # return f"<img src='data:image/png;base64,{base64.b64encode(imgBytes.getvalue()).decode('utf-8')}'/>"
     # slot_img.save(imgBytes, format="PNG")
