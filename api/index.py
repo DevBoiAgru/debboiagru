@@ -1,5 +1,9 @@
+import random, json, dotenv, os, requests, base64
 from flask import Flask, request, render_template, send_file
-import random, json, dotenv, os, requests
+import PIL.ImageDraw as ImageDraw
+import PIL.Image as Image
+import PIL.ImageFont as ImageFont
+import io
 
 dotenv.load_dotenv()
 
@@ -41,7 +45,7 @@ def quote():
         return render_template("SimpleGUI.html", data = {"heading":quote["quote"], "content":quote["author"]})
 
 # Discord rich embed
-@app.route("/embed")
+@app.route("/embed/rich")
 def dcembed():
     title = request.args.get("title")
     description = request.args.get("desc")
@@ -61,6 +65,25 @@ def dcembed():
 {clr_tag if color else "<!--no color-->"}
 """
     return render_template('Embed.html', data = out)
+
+# Discord GIF gambling game
+@app.route("/embed/slots")
+def slots():
+    slot_img = Image.open("assets/slots.png")
+    draw = ImageDraw.Draw(slot_img)
+    font = ImageFont.truetype("assets/NotoEmoji-Regular.ttf", 50)
+    objects = ["🧁", "🍓", "🍩", "👽", "🤖", "🏎️"]
+    slot_coords = [(167, 135), (268, 135), (369, 135)]
+
+    # Draw the slots
+    for coord in slot_coords:
+        draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
+    
+    # imgBytes = io.BytesIO()
+    # return f"<img src='data:image/png;base64,{base64.b64encode(imgBytes.getvalue()).decode('utf-8')}'/>"
+    slot_img.save("assets/TEMP_slots.png", format="PNG")
+    return send_file("../assets/TEMP_slots.png")
+
 
 # Fizzbuzz as a service
 @app.route("/fizzbuzz")
