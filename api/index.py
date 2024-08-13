@@ -86,7 +86,8 @@ def slots():
 
     imgBytes = io.BytesIO()
     slot_img.save(imgBytes, format="PNG")
-    return send_file(imgBytes.getvalue(), mimetype="image/png")
+    imgBytes.seek(0)
+    return send_file(imgBytes, mimetype="image/png")
 
     # Temp file for testing
     # slot_img.save("/tmp/TEMP_slots.png", format="PNG")
