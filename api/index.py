@@ -71,7 +71,7 @@ def dcembed():
 def slots():
 
     if request.args.get("t") is None:
-        redirect(f"/embed/slots?t={time.time()}")
+        return redirect(f"/embed/slots?t={time.time()}")
 
     # Draw the slots
     slot_img = Image.open("assets/slots.png")
