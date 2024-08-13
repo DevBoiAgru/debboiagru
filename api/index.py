@@ -81,11 +81,11 @@ def slots():
         draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
     
     resp.headers["Cache-Control"] = "no-cache"
-    resp.header["Pragma-directive"]= "no-cache"
-    resp.header["Cache-directive"] = "no-cache"
-    resp.header["Cache-control"] = "no-cache"
-    resp.header["Pragma"] = "no-cache"
-    resp.header["Expires"] = "0"
+    resp.headers["Pragma-directive"]= "no-cache"
+    resp.headers["Cache-directive"] = "no-cache"
+    resp.headers["Cache-control"] = "no-cache"
+    resp.headers["Pragma"] = "no-cache"
+    resp.headers["Expires"] = "0"
 
 
     # imgBytes = io.BytesIO()
