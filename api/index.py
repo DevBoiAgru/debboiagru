@@ -81,7 +81,7 @@ def slots():
     
     # imgBytes = io.BytesIO()
     # return f"<img src='data:image/png;base64,{base64.b64encode(imgBytes.getvalue()).decode('utf-8')}'/>"
-    slot_img.save("assets/TEMP_slots.png", format="PNG")
+    slot_img.save("../assets/TEMP_slots.png", format="PNG")
     return send_file("../assets/TEMP_slots.png")
 
 
