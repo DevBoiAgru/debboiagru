@@ -130,7 +130,7 @@
             let name_text = encodeURI(name.value);
             let img_text = encodeURI(img.value);
             let color_val = color.value;
-            result.value = `[‎⠀](https://debboiagru.vercel.app/embed?title=${title_text}&desc=${desc_text}&name=${name_text}&img=${img_text}&color=${color_val.slice(1)})`;
+            result.value = `[‎⠀](https://debboiagru.vercel.app/embed/rich?title=${title_text}&desc=${desc_text}&name=${name_text}&img=${img_text}&color=${color_val.slice(1)})`;
         }
         const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),

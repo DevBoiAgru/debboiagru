@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, send_file
 import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
 import PIL.ImageFont as ImageFont
-import io, base64
+import io
 
 dotenv.load_dotenv()
 
@@ -79,11 +79,12 @@ def slots():
     for coord in slot_coords:
         draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
     
-    # imgBytes = io.BytesIO()
+    imgBytes = io.BytesIO()
     # return f"<img src='data:image/png;base64,{base64.b64encode(imgBytes.getvalue()).decode('utf-8')}'/>"
-    slot_img.save(f"{os.getcwd()}/TEMP_slots.png", format="PNG")
-    return send_file(f"{os.getcwd()}/TEMP_slots.png")
-
+    # slot_img.save(f"{os.getcwd()}/TEMP_slots.png", format="PNG")
+    slot_img.save(imgBytes, format="PNG")
+    imgBytes.seek(0)
+    return send_file(imgBytes, mimetype="image/png")
 
 # Fizzbuzz as a service
 @app.route("/fizzbuzz")
