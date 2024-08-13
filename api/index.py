@@ -1,5 +1,5 @@
 import random, json, dotenv, os, requests, time
-from flask import Flask, request, render_template, send_file, Response
+from flask import Flask, request, render_template, send_file, redirect
 import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
 import PIL.ImageFont as ImageFont
@@ -69,7 +69,11 @@ def dcembed():
 # Discord GIF gambling game
 @app.route("/embed/slots")
 def slots():
-    resp = Response()
+
+    if request.args.get("t") is None:
+        redirect(f"/embed/slots?t={time.time()}")
+
+    # Draw the slots
     slot_img = Image.open("assets/slots.png")
     draw = ImageDraw.Draw(slot_img)
     font = ImageFont.truetype("assets/NotoEmoji-Regular.ttf", 50)
@@ -79,21 +83,14 @@ def slots():
     # Draw the slots
     for coord in slot_coords:
         draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
-    
-    resp.headers["Cache-Control"] = "no-cache"
-    resp.headers["Pragma-directive"]= "no-cache"
-    resp.headers["Cache-directive"] = "no-cache"
-    resp.headers["Cache-control"] = "no-cache"
-    resp.headers["Pragma"] = "no-cache"
-    resp.headers["Expires"] = "0"
 
+    imgBytes = io.BytesIO()
+    slot_img.save(imgBytes, format="PNG")
+    return send_file(imgBytes.getvalue(), mimetype="image/png")
 
-    # imgBytes = io.BytesIO()
-    # return f"<img src='data:image/png;base64,{base64.b64encode(imgBytes.getvalue()).decode('utf-8')}'/>"
-    # slot_img.save(imgBytes, format="PNG")
-    # imgBytes.seek(0)
-    slot_img.save("/tmp/TEMP_slots.png", format="PNG")
-    return send_file("/tmp/TEMP_slots.png", mimetype="image/png", download_name=f"slots{time.time()}.png")
+    # Temp file for testing
+    # slot_img.save("/tmp/TEMP_slots.png", format="PNG")
+    # return send_file("/tmp/TEMP_slots.png", mimetype="image/png", download_name=f"slots{time.time()}.png")
 
 # Fizzbuzz as a service
 @app.route("/fizzbuzz")
