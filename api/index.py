@@ -69,10 +69,6 @@ def dcembed():
 # Discord GIF gambling game
 @app.route("/embed/slots")
 def slots():
-
-    if request.args.get("t") is None:
-        return redirect(f"/embed/slots?t={time.time()}")
-
     # Draw the slots
     slot_img = Image.open("assets/slots.png")
     draw = ImageDraw.Draw(slot_img)
