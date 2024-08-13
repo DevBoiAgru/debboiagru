@@ -81,8 +81,8 @@ def slots():
     
     # imgBytes = io.BytesIO()
     # return f"<img src='data:image/png;base64,{base64.b64encode(imgBytes.getvalue()).decode('utf-8')}'/>"
-    slot_img.save(f"{os.getcwd()}/tmp/TEMP_slots.png", format="PNG")
-    return send_file(f"{os.getcwd()}/tmp/TEMP_slots.png")
+    slot_img.save(f"{os.getcwd()}/TEMP_slots.png", format="PNG")
+    return send_file(f"{os.getcwd()}/TEMP_slots.png")
 
 
 # Fizzbuzz as a service
