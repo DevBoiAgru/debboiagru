@@ -1,5 +1,5 @@
 import random, json, dotenv, os, requests
-from flask import Flask, request, render_template, send_file
+from flask import Flask, request, render_template, send_file, Response
 import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
 import PIL.ImageFont as ImageFont
@@ -69,6 +69,7 @@ def dcembed():
 # Discord GIF gambling game
 @app.route("/embed/slots")
 def slots():
+    resp = Response()
     slot_img = Image.open("assets/slots.png")
     draw = ImageDraw.Draw(slot_img)
     font = ImageFont.truetype("assets/NotoEmoji-Regular.ttf", 50)
@@ -79,7 +80,8 @@ def slots():
     for coord in slot_coords:
         draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
     
-    imgBytes = io.BytesIO()
+    resp.headers["Cache-Control"] = "no-cache"
+    # imgBytes = io.BytesIO()
     # return f"<img src='data:image/png;base64,{base64.b64encode(imgBytes.getvalue()).decode('utf-8')}'/>"
     # slot_img.save(imgBytes, format="PNG")
     # imgBytes.seek(0)
