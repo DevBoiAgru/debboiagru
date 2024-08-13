@@ -1,9 +1,9 @@
-import random, json, dotenv, os, requests, base64
+import random, json, dotenv, os, requests
 from flask import Flask, request, render_template, send_file
 import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
 import PIL.ImageFont as ImageFont
-import io
+import io, base64
 
 dotenv.load_dotenv()
 
@@ -81,8 +81,8 @@ def slots():
     
     # imgBytes = io.BytesIO()
     # return f"<img src='data:image/png;base64,{base64.b64encode(imgBytes.getvalue()).decode('utf-8')}'/>"
-    slot_img.save("/TEMP_slots.png", format="PNG")
-    return send_file("/TEMP_slots.png")
+    slot_img.save(f"{os.getcwd()}/tmp/TEMP_slots.png", format="PNG")
+    return send_file(f"{os.getcwd()}/tmp/TEMP_slots.png")
 
 
 # Fizzbuzz as a service
