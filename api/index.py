@@ -1,4 +1,4 @@
-import random, json, dotenv, os, requests
+import random, json, dotenv, os, requests, time
 from flask import Flask, request, render_template, send_file, Response
 import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
@@ -93,7 +93,7 @@ def slots():
     # slot_img.save(imgBytes, format="PNG")
     # imgBytes.seek(0)
     slot_img.save("/tmp/TEMP_slots.png", format="PNG")
-    return send_file("/tmp/TEMP_slots.png", mimetype="image/png")
+    return send_file("/tmp/TEMP_slots.png", mimetype="image/png", download_name=f"slots{time.time()}.png")
 
 # Fizzbuzz as a service
 @app.route("/fizzbuzz")
