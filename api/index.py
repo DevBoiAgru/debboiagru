@@ -69,13 +69,6 @@ def dcembed():
 # Discord GIF gambling game
 @app.route("/embed/slots")
 def slots():
-    # Draw the slots
-    slot_img = Image.open("assets/slots.png")
-    draw = ImageDraw.Draw(slot_img)
-    font = ImageFont.truetype("assets/NotoEmoji-Regular.ttf", 50)
-    objects = ["🧁", "🍓", "🍩", "👽", "🤖", "🏎️"]
-    slot_coords = [(167, 135), (268, 135), (369, 135)]
-
     # Get seed number from query
     seed = request.args.get("s")
     if seed:
@@ -84,6 +77,13 @@ def slots():
         random.seed(seed)
     else:
         return redirect(f"/embed/slots?s={random.randint(0, 100000)}")
+
+    # Draw the slots
+    slot_img = Image.open("assets/slots.png")
+    draw = ImageDraw.Draw(slot_img)
+    font = ImageFont.truetype("assets/NotoEmoji-Regular.ttf", 50)
+    objects = ["🧁", "🍓", "🍩", "👽", "🤖", "🏎️"]
+    slot_coords = [(167, 135), (268, 135), (369, 135)]
 
     # Draw the slots
     for coord in slot_coords:
