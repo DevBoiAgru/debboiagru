@@ -76,6 +76,15 @@ def slots():
     objects = ["🧁", "🍓", "🍩", "👽", "🤖", "🏎️"]
     slot_coords = [(167, 135), (268, 135), (369, 135)]
 
+    # Get seed number from query
+    seed = request.args.get("s")
+    if seed:
+        # Generate integer from random seed string
+        seed = hash(seed) % 100000
+        random.seed(seed)
+    else:
+        return redirect(f"/embed/slots?s={random.randint(0, 100000)}")
+
     # Draw the slots
     for coord in slot_coords:
         draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
@@ -85,9 +94,9 @@ def slots():
     imgBytes.seek(0)
     return send_file(imgBytes, mimetype="image/png")
 
-    # Temp file for testing
-    # slot_img.save("/tmp/TEMP_slots.png", format="PNG")
-    # return send_file("/tmp/TEMP_slots.png", mimetype="image/png", download_name=f"slots{time.time()}.png")
+@app.route("/embed/slots/<num>")
+def slots2(num):
+    return redirect(f"/embed/slots?s={num}")
 
 # Fizzbuzz as a service
 @app.route("/fizzbuzz")
