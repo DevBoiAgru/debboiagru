@@ -80,21 +80,21 @@ def slots():
     slot_img = Image.open("assets/slots.png")
     draw = ImageDraw.Draw(slot_img)
     font = ImageFont.truetype("assets/NotoEmoji-Regular.ttf", 50)
-    objects = ["🧁🍓🍩👽🤖🏎️"]
+    objects = ["🧁","🍓","🍩", "👽", "🤖", "🏎️"]
 
     # Easter eggs
     seed_hash = hashlib.md5(str(seed).encode()).hexdigest()
     
     if seed_hash == "9271d6eecedd55fcfa6143a33029d496":
-        objects = ["🐵🍗🍉"]
+        objects = ["🐵","🍗","🍉"]
     if seed_hash == "fa961f3c8e69c5de1a10893282d8beae":
-        objects = ["🐰🐇🦄🌈"]
+        objects = ["🐰","🐇","🦄", "🌈"]
     if seed_hash == "3a8920e9f9e35a3a70f4f0ca61ed436c":
-        objects = ["🏎️🚗💻🖥️🤓"]
+        objects = ["🏎️", "🚗", "💻", "🖥️", "🤓"]
     if seed_hash == "87f66043e770f8ef156d204518565158":
-        objects = [random.choice("👽🍩🧁🍓🏎️")]
+        objects = [random.choice(["👽", "🍩", "🧁", "🍓","🏎️"])]
     if seed_hash == "ecbdb882ae865a07d87611437fda0772":
-        objects = ["🍼🥛🐄🐮"]
+        objects = ["🍼", "🥛", "🐄", "🐮"]
 
     slot_coords = [(167, 135), (268, 135), (369, 135)]
     # Draw the slots
