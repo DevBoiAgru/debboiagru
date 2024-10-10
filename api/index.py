@@ -80,40 +80,39 @@ def slots():
     slot_img = Image.open("assets/slots.png")
     draw = ImageDraw.Draw(slot_img)
     font = ImageFont.truetype("assets/NotoEmoji-Regular.ttf", 50)
-    objects = ["🧁","🍓","🍩", "👽", "🤖", "🏎️"]
-    custom_output = False
+    default_objects = ["🧁","🍓","🍩", "👽", "🤖", "🏎️"]
 
     # Easter eggs
-    seed_hash = hashlib.md5(str(seed).encode()).hexdigest()
+    seed_hash = hashlib.md5(seed.encode()).hexdigest()
     
-    if seed_hash == "9271d6eecedd55fcfa6143a33029d496":
-        objects = ["🐵","🍗","🍉"]
-        custom_output = True
-    elif seed_hash == "fa961f3c8e69c5de1a10893282d8beae":
-        objects = ["🐰","🐇","🦄", "🌈"]
-        custom_output = True
-    elif seed_hash == "3a8920e9f9e35a3a70f4f0ca61ed436c":
-        objects = ["🏎️", "🚗", "💻", "🖥️", "🤓"]
-        custom_output = True
-    elif seed_hash == "87f66043e770f8ef156d204518565158":
-        objects = [random.choice(["👽", "🍩", "🧁", "🍓", "🏎️", "♣️", "♦️", "♥️", "♠️"])]
-        custom_output = True
-    elif seed_hash == "ecbdb882ae865a07d87611437fda0772":
-        objects = ["🍼", "🥛", "🐄", "🐮"]
-        custom_output = True
-    elif seed_hash == "b56a18e0eacdf51aa2a5306b0f533204":
-        objects = ["✈️", "🏢", "🏢"]
-        custom_output = True
-    elif seed_hash == "b6f0479ae87d244975439c6124592772":
-        objects == ["🌿", "🌿", "💨"]
-        custom_output = True
+    eggs = {
+        "9271d6eecedd55fcfa6143a33029d496" : ["🐵","🍗","🍉"],                   # n wor
+        "fa961f3c8e69c5de1a10893282d8beae" : ["🐰", "🐇", "🦄", "🌈"],           # m3ga
+        "3a8920e9f9e35a3a70f4f0ca61ed436c" : ["🤖", "💻", "🖥️", "🤓"],           # devboi
+        "ecbdb882ae865a07d87611437fda0772" : ["🍼", "🥛", "🐄", "🐮"],           # milk
+        "b56a18e0eacdf51aa2a5306b0f533204" : ["✈️", "🏢", "🏢"],                 # 911
+        "b6f0479ae87d244975439c6124592772" : ["🌿", "🌿", "💨"],                 # 420
+        "87f66043e770f8ef156d204518565158" : [
+            random.choice(["👽", "🍩", "🧁", "🍓", "🏎️", "♣️", "♦️", "♥️", "♠️"])
+            ]                                                                     # gambit
+    }
 
     slot_coords = [(167, 135), (268, 135), (369, 135)]
-    # Draw the slots
-    if custom_output and len(objects) == len(slot_coords):
+    objects = eggs.get(seed_hash)
+
+    # Easter eggs with specific order
+    if objects and len(objects) == len(slot_coords):
         for i, coord in enumerate(slot_coords):
             draw.text(coord, objects[i] , (209, 15, 176), font=font)
+    # Easter egg but randomized
+    elif objects:
+        # Reset seed for randomness
+        random.seed()
+        for coord in slot_coords:
+            draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
+    # No easter egg, default execution
     else:
+        objects = default_objects
         for coord in slot_coords:
             draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
 
@@ -122,8 +121,7 @@ def slots():
     imgBytes.seek(0)
     return send_file(imgBytes, mimetype="image/png")
 
-
-
+# Redirect to /embed/slots with a random seed
 @app.route("/embed/slots/<num>")
 def slots2(num):
     return redirect(f"/embed/slots?s={num}")
