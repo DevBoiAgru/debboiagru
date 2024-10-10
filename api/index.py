@@ -3,6 +3,7 @@ from flask import Flask, request, render_template, send_file, redirect
 import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
 import PIL.ImageFont as ImageFont
+import hashlib
 import io
 
 dotenv.load_dotenv()
@@ -71,20 +72,31 @@ def dcembed():
 def slots():
     # Get seed number from query
     seed = request.args.get("s")
-    if seed:
-        # Generate integer from random seed string
-        seed = hash(seed) % 100000
-        random.seed(seed)
-    else:
-        return redirect(f"/embed/slots?s={random.randint(0, 100000)}")
+    if not seed:
+        return redirect(f"/embed/slots?s={random.randint(0, 10_000_000)}")
 
+    random.seed(seed)
     # Draw the slots
     slot_img = Image.open("assets/slots.png")
     draw = ImageDraw.Draw(slot_img)
     font = ImageFont.truetype("assets/NotoEmoji-Regular.ttf", 50)
-    objects = ["🧁", "🍓", "🍩", "👽", "🤖", "🏎️"]
-    slot_coords = [(167, 135), (268, 135), (369, 135)]
+    objects = ["🧁🍓🍩👽🤖🏎️"]
 
+    # Easter eggs
+    seed_hash = hashlib.md5(str(seed).encode()).hexdigest()
+    
+    if seed_hash == "9271d6eecedd55fcfa6143a33029d496":
+        objects = ["🐵🍗🍉"]
+    if seed_hash == "fa961f3c8e69c5de1a10893282d8beae":
+        objects = ["🐰🐇🦄🌈"]
+    if seed_hash == "3a8920e9f9e35a3a70f4f0ca61ed436c":
+        objects = ["🏎️🚗💻🖥️🤓"]
+    if seed_hash == "87f66043e770f8ef156d204518565158":
+        objects = [random.choice("👽🍩🧁🍓🏎️")]
+    if seed_hash == "ecbdb882ae865a07d87611437fda0772":
+        objects = ["🍼🥛🐄🐮"]
+
+    slot_coords = [(167, 135), (268, 135), (369, 135)]
     # Draw the slots
     for coord in slot_coords:
         draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
@@ -93,6 +105,8 @@ def slots():
     slot_img.save(imgBytes, format="PNG")
     imgBytes.seek(0)
     return send_file(imgBytes, mimetype="image/png")
+
+
 
 @app.route("/embed/slots/<num>")
 def slots2(num):
