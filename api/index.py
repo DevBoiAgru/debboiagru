@@ -81,25 +81,41 @@ def slots():
     draw = ImageDraw.Draw(slot_img)
     font = ImageFont.truetype("assets/NotoEmoji-Regular.ttf", 50)
     objects = ["🧁","🍓","🍩", "👽", "🤖", "🏎️"]
+    custom_output = False
 
     # Easter eggs
     seed_hash = hashlib.md5(str(seed).encode()).hexdigest()
     
     if seed_hash == "9271d6eecedd55fcfa6143a33029d496":
         objects = ["🐵","🍗","🍉"]
-    if seed_hash == "fa961f3c8e69c5de1a10893282d8beae":
+        custom_output = True
+    elif seed_hash == "fa961f3c8e69c5de1a10893282d8beae":
         objects = ["🐰","🐇","🦄", "🌈"]
-    if seed_hash == "3a8920e9f9e35a3a70f4f0ca61ed436c":
+        custom_output = True
+    elif seed_hash == "3a8920e9f9e35a3a70f4f0ca61ed436c":
         objects = ["🏎️", "🚗", "💻", "🖥️", "🤓"]
-    if seed_hash == "87f66043e770f8ef156d204518565158":
-        objects = [random.choice(["👽", "🍩", "🧁", "🍓","🏎️"])]
-    if seed_hash == "ecbdb882ae865a07d87611437fda0772":
+        custom_output = True
+    elif seed_hash == "87f66043e770f8ef156d204518565158":
+        objects = [random.choice(["👽", "🍩", "🧁", "🍓", "🏎️", "♣️", "♦️", "♥️", "♠️"])]
+        custom_output = True
+    elif seed_hash == "ecbdb882ae865a07d87611437fda0772":
         objects = ["🍼", "🥛", "🐄", "🐮"]
+        custom_output = True
+    elif seed_hash == "b56a18e0eacdf51aa2a5306b0f533204":
+        objects = ["✈️", "🏢", "🏢"]
+        custom_output = True
+    elif seed_hash == "b6f0479ae87d244975439c6124592772":
+        objects == ["🌿", "🌿", "💨"]
+        custom_output = True
 
     slot_coords = [(167, 135), (268, 135), (369, 135)]
     # Draw the slots
-    for coord in slot_coords:
-        draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
+    if custom_output and len(objects) == len(slot_coords):
+        for i, coord in enumerate(slot_coords):
+            draw.text(coord, objects[i] , (209, 15, 176), font=font)
+    else:
+        for coord in slot_coords:
+            draw.text(coord, random.choice(objects), (209, 15, 176), font=font)
 
     imgBytes = io.BytesIO()
     slot_img.save(imgBytes, format="PNG")
