@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include 'head.html' %}
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='index.css') }}"
+        />
+        <title>{{ title }}</title>
+        <meta property="og:title" content="{{ heading }}" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="BBC Quotes" />
+        <meta property="og:description" content="{{ content }}" />
+        <meta name="theme-color" content="#d90429" />
+    </head>
+    <body>
+        {% include 'navbar.html' %}
+        <div class="wrapper">
+            <h1 style="font-size: clamp(1.5rem, 5vw, 3rem)">{{ heading }}</h1>
+            <div class="content">
+                <p style="font-size: clamp(1rem, 3vw, 1.5rem)">
+                    {{ content | safe }}
+                </p>
+                <div style="display: flex; margin-top: 40px">
+                    <p>
+                        <a
+                            style="
+                                font-size: clamp(0.8rem, 2vw, 1rem);
+                                color: #9a9a9a;
+                                font-weight: 500;
+                                text-decoration: underline;
+                            "
+                            href="{{ url_for('fetchquote') }}?id={{ quote_id }}"
+                        >
+                            #{{ quote_id }}
+                        </a>
+                    </p>
+                    <p style="margin-left: auto">
+                        <a
+                            style="
+                                font-size: clamp(0.8rem, 2vw, 1rem);
+                                color: #9a9a9a;
+                                font-weight: 500;
+                                text-decoration: underline;
+                                text-align: right;
+                            "
+                            href="https://discord.com/channels/698648550690783343/803648539627487233/{{ quote_id }}"
+                        >
+                            📅 {{ timestamp }}
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
