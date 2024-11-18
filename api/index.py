@@ -1,17 +1,34 @@
 import random
 import dotenv
 import io
+import sqlite3
 import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
 import PIL.ImageFont as ImageFont
 from flask import Flask, request, render_template, send_file, redirect, url_for
 from datetime import datetime
-
-import quotes
-
 dotenv.load_dotenv()
 
 app = Flask(__name__, template_folder="../web/pages", static_folder="../web/static")
+
+def get_quote(quote_id: int = None):
+    """
+    Retrieves a quote from the database.
+
+    If quote_id is provided, the quote with that ID is retrieved. Otherwise, a random quote is chosen.
+
+    :param quote_id: The ID of the quote to retrieve, or None to get a random quote
+    :return: A tuple containing the ID, content, author username, and the timestamp
+    """
+    conn = sqlite3.connect('assets/quotes.db')
+    cursor = conn.cursor()
+    if quote_id:
+        cursor.execute("SELECT * FROM quotes WHERE id = ?", (quote_id,))
+    else:
+        cursor.execute("SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1")
+    quote = cursor.fetchone()
+    conn.close()
+    return quote
 
 @app.route('/')
 def index():
@@ -21,7 +38,7 @@ def index():
 @app.route('/bbcquote')
 def fetchquote():
     quote_id = request.args.get('id')
-    quote = quotes.get_quote(quote_id) if quote_id else quotes.get_quote()
+    quote = get_quote(quote_id) if quote_id else get_quote()
     
     if quote is None:
         return render_template("quote.html", 
