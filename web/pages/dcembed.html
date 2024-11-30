@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include 'head.html' %} {{ data | safe }}
+        <title>DevBoi's Embed Maker</title>
+        <link
+            rel="icon"
+            href="https://raw.githubusercontent.com/DevBoiAgru/DevBoiAgru/main/assets/images/LogoTransparent.png"
+            type="image/x-icon"
+        />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900"
+        />
+        <style>
+            :root {
+                --background: #36393e;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                padding: 0px;
+                margin: 0px;
+            }
+            body {
+                background-color: var(--background);
+                color: rgb(233, 233, 233);
+                height: 100vh;
+                font-family: "Montserrat";
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .app {
+                background-color: hsl(225 calc(1 * 1.3%) 12.5% / 1);
+                width: 90%;
+                height: 90vh;
+                padding: 50px;
+                border-radius: 20px;
+            }
+            .input-form {
+                display: flex;
+                flex-direction: column;
+                margin-top: 30px;
+            }
+            label {
+                margin-left: 5px;
+                margin-top: 10px;
+            }
+            .textbox {
+                height: 40px;
+                width: 85%;
+                background-color: #efefef;
+                font-size: 1.5rem;
+                border-radius: 20px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            .result {
+                margin-top: 50px;
+            }
+            .result-btn {
+                height: 45px;
+                width: 45px;
+                border-radius: 50%;
+                background-color: #454fbf;
+                color: #ffffff;
+                border: none;
+                transition: all 1s ease;
+            }
+            @media screen and (max-width: 600px) {
+                .app {
+                    width: 95%;
+                    height: 95vh;
+                    padding: 20px;
+                }
+                .textbox {
+                    width: 95%;
+                }
+            }
+            @keyframes emphasis {
+                50% {
+                    transform: scale(2);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="app">
+            <h1>Simple discord embed maker</h1>
+            <hr color="#bababa" />
+            <div class="input-form">
+                <label for="title-box">Embed title</label>
+                <input
+                    type="text"
+                    name="title"
+                    id="title-box"
+                    placeholder="Enter embed title"
+                    class="textbox"
+                    autocomplete="off"
+                    oninput="update()"
+                    value="Some title"
+                />
+
+                <label for="desc-box">Embed description</label>
+                <input
+                    type="text"
+                    name="desc"
+                    id="desc-box"
+                    placeholder="Enter embed description"
+                    class="textbox"
+                    autocomplete="off"
+                    oninput="update()"
+                    value="Some description"
+                />
+
+                <label for="name-box">Embed name</label>
+                <input
+                    type="text"
+                    name="name"
+                    id="name-box"
+                    placeholder="Enter embed name"
+                    class="textbox"
+                    autocomplete="off"
+                    oninput="update()"
+                    value="Some heading"
+                />
+
+                <label for="img-box">Embed image</label>
+                <input
+                    type="text"
+                    name="img"
+                    id="img-box"
+                    placeholder="Enter embed image link"
+                    class="textbox"
+                    autocomplete="off"
+                    oninput="update()"
+                />
+
+                <label for="color-box">Embed color</label>
+                <input
+                    type="color"
+                    name="clr"
+                    id="color-box"
+                    oninput="update()"
+                    value="#08EA8E"
+                />
+
+                <hr width="60%" color="#aaaaaa" />
+                <div class="result">
+                    <label for="result">Embed link: </label>
+                    <input
+                        type="text"
+                        name="result"
+                        id="result"
+                        disabled
+                        class="textbox"
+                    />
+                    <button
+                        onclick="navigator.clipboard.writeText(result.value); this.style.animation='emphasis 1s ease'; setTimeout(()=>{this.style.animation=''}, 1000); "
+                        class="result-btn"
+                    >
+                        <strong>Copy!</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script>
+            let title = document.getElementById("title-box");
+            let desc = document.getElementById("desc-box");
+            let name = document.getElementById("name-box");
+            let img = document.getElementById("img-box");
+            let color = document.getElementById("color-box");
+            let result = document.getElementById("result");
+
+            function update() {
+                let title_text = encodeURI(title.value);
+                let desc_text = encodeURI(desc.value);
+                let name_text = encodeURI(name.value);
+                let img_text = encodeURI(img.value);
+                let color_val = color.value;
+                result.value = `[‎⠀](https://debboiagru.vercel.app/embed/rich?title=${title_text}&desc=${desc_text}&name=${name_text}&img=${img_text}&color=${color_val.slice(
+                    1
+                )})`;
+            }
+            const params = new Proxy(
+                new URLSearchParams(window.location.search),
+                {
+                    get: (searchParams, prop) => searchParams.get(prop),
+                }
+            );
+            title.value = params.title;
+            desc.value = params.desc;
+            name.value = params.name;
+            img.value = params.img;
+            color.value = `#${params.color}`;
+            update(); // For default values
+        </script>
+    </body>
+</html>

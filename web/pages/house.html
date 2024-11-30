@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOUSE</title>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content=" {{url_for('house')}} ">
+    <meta property="og:title" content="Endless House">
+    <meta property="og:description" content="A simple house, but it's infinitely tall">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta property="og:image" content="https://i.postimg.cc/9FhTXVCv/image.png">
+    <style>
+        pre{
+            margin: 0px;
+            padding: 0px;
+        }
+        body{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            padding: auto;
+        }
+    </style>
+    <!-- Inspired by Endless Horse: https://endless.horse/ -->
+</head>
+<body>
+    <pre>
+                           ====
+                           !!!!
+      ==========================
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  ||      _____          _____    ||
+  ||      | | |          | | |    ||
+  ||      |-|-|          |-|-|    ||
+  ||      #####          #####    ||
+  ||                              ||</pre>
+</body>
+    <script>
+        let section = `<pre>||      _____          _____    ||
+||      | | |          | | |    ||
+||      |-|-|          |-|-|    ||
+||      #####          #####    ||
+||                              ||</pre>`
+        for (i=0; i<=20; i++) document.body.innerHTML += section;
+        document.addEventListener("scroll", 
+        () =>{
+            document.body.innerHTML += section;
+        })
+    </script>
+</html>

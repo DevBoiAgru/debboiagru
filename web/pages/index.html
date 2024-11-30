@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>DebBoiAgru</title>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='index.css') }}"
+        />
+        {% include 'head.html' %}
+        <title>DebBoiAgru</title>
+    </head>
+    <body>
+        {% include 'navbar.html' %}
+
+        <section id="about">
+            <h1>>>> DevBoiAgru</h1>
+            <p>
+                Welcome! This site is used to display some fun projects and
+                experiments. I'll be adding more soon!
+            </p>
+        </section>
+
+        <section id="projects">
+            <h1>Webpages:</h1>
+            <div class="project">
+                <h2>Endless house</h2>
+                <p>
+                    Inspired by the
+                    <a
+                        style="color: var(--primary) !important"
+                        href="http://endless.horse/"
+                        target="_blank"
+                        >Endless Horse</a
+                    >, this is a house which you can't scroll to the bottom of.
+                </p>
+                <a href="{{ url_for('house')}}" target="_blank">Visit page</a>
+            </div>
+
+            <div class="project">
+                <h2>Quotes from the baby blue club</h2>
+                <p>
+                    Quotes from the people of the
+                    <a
+                        style="color: var(--primary) !important"
+                        href="https://discord.gg/themuye"
+                        target="_blank"
+                        >baby blue club.</a
+                    >
+                </p>
+                <a
+                    href="{{ url_for('fetchquote')}}"
+                    target="_blank"
+                    id="quoteLink"
+                    >Visit page</a
+                >
+            </div>
+
+            <div class="project">
+                <h2>Virtual Laser pointer</h2>
+                <p>
+                    A very simple virtual laser pointer that you can control
+                    with your mouse, add background images and change the
+                    colour.
+                </p>
+                <a href="{{ url_for('laser')}}" target="_blank">Visit page</a>
+            </div>
+
+            <div class="project">
+                <h2>Custom discord embed</h2>
+                <p>
+                    A small app to generate a discord embed using hyperlinks and
+                    opengraph tags
+                </p>
+                <a href="{{ url_for('dcembed')}}" target="_blank">Visit page</a>
+            </div>
+
+            <div class="project">
+                <h2>Alien Chat</h2>
+                <p>Chat with Zulr Corz from gxorm 6538-ccz</p>
+                <a href="{{ url_for('alien')}}" target="_blank">Visit page</a>
+            </div>
+
+            <h1>JSON Endpoints for nerds:</h1>
+            <div class="project">
+                <h2>Fizzbuzz as a serice</h2>
+                <p>Returns FizzBuzz upto the requested number.</p>
+                <b>Path:</b> /fizzbuzz.
+                <h3>Query Parameters:</h3>
+                <ul>
+                    <li>
+                        Query parameter "n" to define the limit.
+                        <code>Value: integer</code>
+                    </li>
+                </ul>
+                <p>
+                    Example:
+                    <a href="{{ url_for('fizzbuzz')}}?n=10">/fizzbuzz?n=10</a>
+                    fetches Fizzbuzz for the first 10 numbers
+                </p>
+            </div>
+
+            <div class="project">
+                <h2>A Quote from the baby blue club</h2>
+                <b
+                    >Warning: Content is collected from the internet, can
+                    include strong language.</b
+                >
+                <p>Fetch a quote from the baby blue club.</p>
+                <b>Path:</b> /bbcquote.
+                <h3>Query Parameters:</h3>
+                <ul>
+                    <li>
+                        Query parameter "id" to define the quote. Omit for a
+                        random quote. <code>Value: integer</code>
+                    </li>
+                    <li>
+                        Query parameter "json" to return as JSON.
+                        <code>Value: true / false</code>
+                    </li>
+                </ul>
+                <p>
+                    Example:
+                    <a href="{{ url_for('fetchquote')}}?id=0000000000&json=true"
+                        >/bbcquote?id=0000000000&json=true
+                    </a>
+                    tries to fetch a quote with id 0000000000, as JSON
+                </p>
+            </div>
+        </section>
+
+        <!-- Full-screen warning against bbc cancer -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <button onclick="closeWarning()" class="close">&#10006;</button>
+                <h1>Warning!</h1>
+                <p>
+                    The quotes displayed on this page are randomly selected from
+                    internet sources and may contain NSFW or offensive material.
+                    These quotes are provided for entertainment purposes only.
+                    The accuracy, authenticity or the appropriateness of the
+                    content is not erified, and it does not reflect the views or
+                    opinions of this website or its creators. Please proceed
+                    with caution and be aware that some content may be
+                    disturbing or inappropriate.
+                </p>
+                <button onclick="closeWarning()">Ok take me back</button>
+                <button onclick="window.open(quoteLink.href, '_self')">
+                    Continue anyway
+                </button>
+            </div>
+        </div>
+
+        <script>
+            const quoteLink = document.getElementById("quoteLink");
+            const popup = document.getElementById("popup");
+            var popup_open = false;
+
+            function closeWarning() {
+                if (popup_open) {
+                    popup.style.display = "none";
+                    popup_open = false;
+                }
+            }
+
+            quoteLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                popup.style.display = "flex";
+                popup_open = true;
+            });
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && popup_open) {
+                    popup.style.display = "none";
+                    popup_open = false;
+                }
+            });
+        </script>
+        <style>
+            .popup {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(255, 255, 255, 0.7);
+                display: none;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .popup-content {
+                position: relative;
+                overflow: hidden;
+                background-color: white;
+                padding: 30px;
+                text-align: center;
+                border-radius: 10px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                max-width: 70%;
+                min-width: 50%;
+            }
+
+            .popup p {
+                font-size: clamp(1rem, 2vw, 1.5rem);
+                margin-bottom: 20px;
+            }
+
+            .popup-content::before {
+                content: "";
+                position: absolute;
+                left: 0%;
+                top: 0%;
+                width: 10px;
+                height: 100%;
+                background-color: var(--secondary);
+            }
+
+            .popup-content .close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background-color: transparent !important;
+                color: var(--dark);
+                border: none;
+                font-size: 2rem;
+                cursor: pointer;
+            }
+
+            .popup-content button {
+                padding: 10px 20px;
+                background-color: var(--secondary);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 1rem;
+                cursor: pointer;
+                margin: 3px;
+            }
+
+            @media screen and (max-width: 600px) {
+                .popup-content {
+                    max-width: 100%;
+                }
+            }
+        </style>
+    </body>
+</html>

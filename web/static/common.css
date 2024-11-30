@@ -1,0 +1,21 @@
+:root {
+    --background: #2b2d42;
+    --primary: #d90429;
+    --secondary: #ef233c;
+    --light: #8d99ae;
+    --text: #edf2f4;
+    --dark: #272727;
+}
+
+* {
+    box-sizing: border-box;
+}
+body {
+    background-color: var(--text);
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+    font-family: "Montserrat", sans-serif;
+    min-height: 80vh;
+}
