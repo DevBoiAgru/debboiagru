@@ -1,7 +1,6 @@
 import random
 import dotenv
 import io
-import sqlite3
 import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
 import PIL.ImageFont as ImageFont
@@ -18,8 +17,8 @@ from flask import (
 )
 from datetime import datetime
 
-from functions.clock import ascii_num
-from functions.quotes import get_quote
+from utils.clock import ascii_num
+from utils.quotes import get_quote
 
 dotenv.load_dotenv()
 
