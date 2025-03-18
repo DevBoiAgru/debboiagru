@@ -5,6 +5,7 @@ import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
 import PIL.ImageFont as ImageFont
 import time
+import html
 
 from flask import (
     Flask,
@@ -73,11 +74,11 @@ def dcembed():
     image = request.args.get("img", "").replace("<", "")
     color = request.args.get("color", "").replace("<", "")
 
-    title_tag = f'<meta property="og:title" content="{title}">'
-    desc_tag = f'<meta property="og:description" content="{description}">'
-    name_tag = f'<meta property="og:site_name" content="{name}">'
-    img_tag = f'<meta property="og:image" content="{image}">'
-    clr_tag = f'<meta name="theme-color" content="#{color}">'
+    title_tag = f'<meta property="og:title" content="{html.escape(title)}">'
+    desc_tag = f'<meta property="og:description" content="{html.escape(description)}">'
+    name_tag = f'<meta property="og:site_name" content="{html.escape(name)}">'
+    img_tag = f'<meta property="og:image" content="{html.escape(image)}">'
+    clr_tag = f'<meta name="theme-color" content="#{html.escape(color)}">'
     out = f"""
 {title_tag if title else "<!--no title-->"}
 {img_tag if image else "<!--no image-->"}
@@ -128,11 +129,11 @@ def fizzbuzz():
         return []
     # Simple fizzbuzz logic
     fb = [
-        f"Fizz"
+        "Fizz"
         if i % 3 == 0 and i % 5 != 0
-        else f"Buzz"
+        else "Buzz"
         if i % 5 == 0 and i % 3 != 0
-        else f"FizzBuzz"
+        else "FizzBuzz"
         if i % 3 == 0 and i % 5 == 0
         else i
         for i in range(1, n)
