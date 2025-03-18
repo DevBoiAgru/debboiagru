@@ -50,21 +50,21 @@
                 margin-top: 10px;
             }
             .textbox {
-                height: 40px;
+                height: 35px;
                 width: 85%;
                 background-color: #efefef;
                 font-size: 1.5rem;
                 border-radius: 20px;
                 padding: 10px;
-                margin-top: 10px;
+                margin-top: 5px;
             }
             .result {
                 margin-top: 50px;
             }
             .result-btn {
-                height: 45px;
-                width: 45px;
-                border-radius: 50%;
+                height: 50px;
+                width: 60px;
+                border-radius: 25px;
                 background-color: #454fbf;
                 color: #ffffff;
                 border: none;
@@ -82,11 +82,16 @@
             }
             @keyframes emphasis {
                 50% {
-                    transform: scale(2);
+                    filter: brightness(1.5);
                 }
                 100% {
-                    transform: scale(1);
+                    filter: brightness(1);
                 }
+            }
+            #redirect-url-text {
+                margin: 0px;
+                color: #ff3b3b;
+                word-wrap: break-word;
             }
         </style>
     </head>
@@ -94,6 +99,23 @@
         <div class="app">
             <h1>Simple discord embed maker</h1>
             <hr color="#bababa" />
+            <div class="result">
+                <label for="result">Embed link: </label>
+                <input
+                    type="text"
+                    name="result"
+                    id="result"
+                    disabled
+                    class="textbox"
+                />
+                <button
+                    onclick="navigator.clipboard.writeText(result.value); this.style.animation='emphasis 1s ease'; this.innerText='Copied!'; setTimeout(()=>{this.style.animation=''; this.innerText='Copy';}, 1000); "
+                    class="result-btn"
+                >
+                    Copy
+                </button>
+            </div>
+
             <div class="input-form">
                 <label for="title-box">Embed title</label>
                 <input
@@ -142,51 +164,67 @@
                     oninput="update()"
                 />
 
-                <label for="color-box">Embed color</label>
+                <label for="color-box">Embed redirect</label>
                 <input
-                    type="color"
-                    name="clr"
-                    id="color-box"
+                    type="text"
+                    name="redirect_url"
+                    id="redirect-box"
                     oninput="update()"
-                    value="#08EA8E"
+                    class="textbox"
+                    placeholder="Target URL for redirect"
                 />
 
-                <hr width="60%" color="#aaaaaa" />
-                <div class="result">
-                    <label for="result">Embed link: </label>
+                <p>
+                    Embed color:
                     <input
-                        type="text"
-                        name="result"
-                        id="result"
-                        disabled
-                        class="textbox"
+                        type="color"
+                        name="clr"
+                        id="color-box"
+                        oninput="update()"
+                        value="#08EA8E"
                     />
-                    <button
-                        onclick="navigator.clipboard.writeText(result.value); this.style.animation='emphasis 1s ease'; setTimeout(()=>{this.style.animation=''}, 1000); "
-                        class="result-btn"
-                    >
-                        <strong>Copy!</strong>
-                    </button>
-                </div>
+                </p>
             </div>
         </div>
+
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <h1>Warning!</h1>
+                <p style="margin: 0%">
+                    Warning: You are about to be redirected to
+                </p>
+                <p id="redirect-url-text"></p>
+                <p style="margin-top: 0%; margin-bottom: 15px">
+                    This site may not be secure and could contain harmful
+                    content, misleading information, or security risks. I am not
+                    responsible for its content, policies, or any potential
+                    harm. Proceed with caution.
+                </p>
+                <button onclick="closeWarning()">Take me back</button>
+                <button onclick="redirect_to_site()">Proceed to site</button>
+            </div>
+        </div>
+
         <script>
             let title = document.getElementById("title-box");
             let desc = document.getElementById("desc-box");
             let name = document.getElementById("name-box");
             let img = document.getElementById("img-box");
             let color = document.getElementById("color-box");
+            let redirect = document.getElementById("redirect-box");
             let result = document.getElementById("result");
 
             function update() {
+                let redirect_url = encodeURI(redirect.value);
                 let title_text = encodeURI(title.value);
                 let desc_text = encodeURI(desc.value);
                 let name_text = encodeURI(name.value);
                 let img_text = encodeURI(img.value);
+
                 let color_val = color.value;
                 result.value = `[‎⠀](https://debboiagru.vercel.app/embed/rich?title=${title_text}&desc=${desc_text}&name=${name_text}&img=${img_text}&color=${color_val.slice(
                     1
-                )})`;
+                )}&redirect=${redirect_url})`;
             }
             const params = new Proxy(
                 new URLSearchParams(window.location.search),
@@ -200,6 +238,101 @@
             img.value = params.img;
             color.value = `#${params.color}`;
             update(); // For default values
+
+            const popup = document.getElementById("popup");
+            var popup_open = false;
+
+            function closeWarning() {
+                if (popup_open) {
+                    popup.style.display = "none";
+                    popup_open = false;
+                }
+            }
+
+            function openWarning() {
+                if (!popup_open) {
+                    popup_open = true;
+                    popup.style.display = "flex";
+                }
+            }
+
+            function redirect_to_site() {
+                window.open(params.redirect, "_self");
+            }
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && popup_open) {
+                    popup.style.display = "none";
+                    popup_open = false;
+                }
+            });
+
+            // Check if we need to redirect the user
+            if (params.redirect.trim() !== "") {
+                document.getElementById("redirect-url-text").innerText =
+                    params.redirect + ".";
+                openWarning();
+                popup_open = true;
+            }
         </script>
+
+        <style>
+            .popup {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                display: none;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .popup-content {
+                position: relative;
+                overflow: hidden;
+                background-color: var(--background);
+                padding: 30px;
+                text-align: center;
+                border-radius: 10px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                max-width: 70%;
+                min-width: 50%;
+            }
+
+            .popup p {
+                font-size: clamp(1rem, 2vw, 1.5rem);
+                margin-bottom: 20px;
+            }
+
+            .popup-content .close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background-color: transparent !important;
+                color: #fafafa;
+                border: none;
+                font-size: 2rem;
+                cursor: pointer;
+            }
+
+            .popup-content button {
+                padding: 10px 20px;
+                background-color: #454fbf;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 1rem;
+                cursor: pointer;
+                margin: 3px;
+            }
+
+            @media screen and (max-width: 600px) {
+                .popup-content {
+                    max-width: 100%;
+                }
+            }
+        </style>
     </body>
 </html>

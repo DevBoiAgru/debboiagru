@@ -4,12 +4,10 @@ import io
 import PIL.ImageDraw as ImageDraw
 import PIL.Image as Image
 import PIL.ImageFont as ImageFont
-import time
 import html
 
 from flask import (
     Flask,
-    Response,
     request,
     render_template,
     send_file,
@@ -18,7 +16,6 @@ from flask import (
 )
 from datetime import datetime
 
-from utils.clock import ascii_num
 from utils.quotes import get_quote
 
 dotenv.load_dotenv()
@@ -139,25 +136,6 @@ def fizzbuzz():
         for i in range(1, n)
     ]
     return fb
-
-
-# Terminal clock
-@app.route("/clock")
-def clock():
-    # Check if the request is made with curl
-    if not request.headers.get("User-Agent", "").lower().startswith("curl"):
-        return "Curl it in the terminal!", 400
-
-    def stream():
-        clearScreen = "\033[H\033[J"
-        while True:
-            cur_time = f"{time.strftime('%H:%M:%S', time.gmtime())}"
-            yield f"{clearScreen}{ascii_num(cur_time)}\nUTC\n"
-            time.sleep(1)
-
-    return Response(
-        stream(), mimetype="text/event-stream", headers={"Cache-Control": "no-cache"}
-    )
 
 
 @app.route("/house")
